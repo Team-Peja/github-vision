@@ -4,6 +4,7 @@
   "description": "visualizer for github",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack --watch --config webpack.config.js",
     "build": "webpack -p --config webpack.config.js"
@@ -29,14 +30,17 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
     "less": "^2.7.3",
-    "less-loader": "^4.0.5",
-    "webpack": "^3.10.0",
     "serve-favicon": "^2.4.5",
-    "webpack-dev-server": "^2.11.0"
+    "webpack-dev-server": "^2.11.0",
+    "webpack": "^3.10.0",
+    "less-loader": "^4.0.5"
   },
   "homepage": "https://github.com/Team-Peja/github-vision#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
-  }
+  },
+  "homepage": "https://github.com/Team-Peja/github-vision#readme"
 }
