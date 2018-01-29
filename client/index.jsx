@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 //container
+import Container from './components/Container.jsx';
 
 class Handler extends Component {
   render() {
     return (
-      <div>hello</div>
+      <Container />
     )
   }
 }
