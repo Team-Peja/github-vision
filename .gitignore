@@ -8,3 +8,5 @@ npm-debug.log*
 dist
 build
 build/bundle.js
+.env
+.vscode

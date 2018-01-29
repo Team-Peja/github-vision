@@ -1,7 +1,7 @@
 {
-  "name": "github-visual",
-  "version": "1.0.0",
-  "description": "visualize github",
+  "name": "github-vision",
+  "version": "0.1.0",
+  "description": "visualizer for github",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/Team-Peja/github-vision.git"
   },
-  "author": "Justin Ko, Erik Larsen, An Luong, Peter Fasula",
+  "author": "Team Peja",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Team-Peja/github-vision/issues"
