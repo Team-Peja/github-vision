@@ -8,11 +8,13 @@ import Footer from './Footer/Footer.jsx';
 
 class Container extends Component {
   render() {
+    return (
     <div id="container">
       <Nav />
       <Main />
       <Footer />
     </div>
+    )
   }
 }
 
