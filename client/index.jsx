@@ -12,4 +12,4 @@ class Handler extends Component {
   }
 }
 
-ReactDom.render(<Handler />, document.getElementById('root'));
+ReactDOM.render(<Handler />, document.getElementById('root'));
