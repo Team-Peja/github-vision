@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 class Graph extends Component {
   render() {
     return (
-      <div class="graph">
+      <div className="graph">
         GRAPH HERE!!!!
       </div>
     )
