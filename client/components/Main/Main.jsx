@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 //application imports
 import Description from '../Description/Description.jsx';
-import Graph from '../Graph/Graph.jsx';
+import GraphContainer from '../Graph/GraphContainer.jsx';
 
 class Main extends Component {
   constructor(props) {
@@ -13,10 +13,10 @@ class Main extends Component {
   displayBody() {
     console.log(this.props.user);
     let bool = false;
-    if (!bool) {
+    if (bool) {
       return <Description />
     } else {
-      return <Graph />
+      return <GraphContainer />
     }
   }
   
@@ -24,7 +24,6 @@ class Main extends Component {
     return (
     <div id="main" className="section padding">
       <div id="instructions">
-        <div className="h2 fw-600 margin-top margin-bottom-m raleway">Get Started</div>
         {this.displayBody()}
       </div>
     </div>
