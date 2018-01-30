@@ -5,7 +5,7 @@ import logo from '../../assets/images/glasses.svg'
 class Nav extends Component {
   render() {
     return (
-      <div id="menu">
+      <div id="Nav">
         <div>
           <img style={{ width: '55px' }} src={logo} />
           <h4>Git Visual</h4>

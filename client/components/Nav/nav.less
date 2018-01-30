@@ -1,0 +1,33 @@
+#Nav {
+  height: 65px;
+  
+  #logo-container {
+    width: 185px;
+    height: inherit;
+  }
+
+  #navigation {
+    right: 0;
+
+    ul {
+      list-style: none;
+      font-size: 14px;
+
+      li {
+        display: inline;
+        &:extend(.margin-right);
+      }
+
+      // github icon
+      iframe {
+        position: absolute;
+        left: -80px;
+      }
+    }
+    
+    .active {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}
