@@ -1,33 +1,76 @@
 #Nav {
-  height: 65px;
-  
-  #logo-container {
-    width: 185px;
-    height: inherit;
+  background-color: yellow;
+  display: grid;
+  grid-template-columns: 450px 500px 500px;
+  width: 1450px;
+  margin: 0 auto;
+
+
+  #logo {
+    display: grid;
+    grid-template-columns: 40px 80px;
+    grid-gap: @space;
+    align-items: center;
+
+    img {
+      width: 40px;
+    }
+
+    h4 {
+      width: 100px;
+    }
   }
+
+  ul {
+    list-style: none;
+    font-size: 14px;
+
+    li {
+      display: inline;
+    }
+  }  
 
   #navigation {
-    right: 0;
+    align-items: right;
 
-    ul {
-      list-style: none;
-      font-size: 14px;
-
-      li {
-        display: inline;
-        &:extend(.margin-right);
-      }
-
-      // github icon
-      iframe {
-        position: absolute;
-        left: -80px;
-      }
+    .nav-container {
+      vertical-align: middle;
+      display: grid;
+      height: 75.92px;
+      grid-template-columns: 200px 200px;    
+      align-items: center;
+      text-align: right;
     }
-    
-    .active {
-      color: white;
-      text-decoration: underline;
-    }
+
   }
+
+  // #logo-container {
+  //   width: 185px;
+  //   height: inherit;
+  // }
+
+  // #navigation {
+  //   right: 0;
+
+  //   ul {
+  //     list-style: none;
+  //     font-size: 14px;
+
+  //     li {
+  //       display: inline;
+  //       &:extend(.margin-right);
+  //     }
+
+  //     // github icon
+  //     iframe {
+  //       position: absolute;
+  //       left: -80px;
+  //     }
+  //   }
+    
+  //   .active {
+  //     color: white;
+  //     text-decoration: underline;
+  //   }
+  // }
 }

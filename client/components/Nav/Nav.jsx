@@ -6,16 +6,15 @@ class Nav extends Component {
   render() {
     return (
       <div id="Nav">
-        <div>
-          <img style={{ width: '55px' }} src={logo} />
-          <h4>Git Visual</h4>
+        <div id="logo">
+          <img src={logo} />
+          <h4 className="align-vertical">Git Visual</h4>
         </div>
-        <nav id="navigation" className="margin-right-xl">
-        <ul className="fw-600">
-          <span>
-            <li className="hide-nav-link"><a href="">How it Works</a></li>
-            <li className="hide-nav-link"><a href="">Log in with Github!</a></li>
-          </span>
+        <div></div>
+        <nav id="navigation">
+        <ul className="fw-600 nav-container">
+          <li className="hide-nav-link"><a href="">How it Works</a></li>
+          <li className="hide-nav-link"><a href="">Log in with Github!</a></li>
         </ul>
         </nav>
       </div>
