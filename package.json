@@ -44,10 +44,11 @@
   },
   "homepage": "https://github.com/Team-Peja/github-vision#readme",
   "dependencies": {
-    "moment": "^2.20.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "moment": "^2.20.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "victory": "^0.24.5"
   }
 }
