@@ -48,6 +48,33 @@ const deletions = [
   {repository: "Webtorrent", deletions: 1144}
 ]
 
+const commitTimes = [
+  {time: 0, commits: 0},
+  {time: 1, commits: 0},
+  {time: 2, commits: 0},
+  {time: 3, commits: 0},
+  {time: 4, commits: 0},
+  {time: 5, commits: 0},
+  {time: 6, commits: 0},
+  {time: 7, commits: 0},
+  {time: 8, commits: 0},
+  {time: 9, commits: 2},
+  {time: 10, commits: 4},
+  {time: 11, commits: 4},
+  {time: 12, commits: 0},
+  {time: 13, commits: 6},
+  {time: 14, commits: 4},
+  {time: 15, commits: 6},
+  {time: 16, commits: 0},
+  {time: 17, commits: 6},
+  {time: 18, commits: 4},
+  {time: 19, commits: 1},
+  {time: 20, commits: 2},
+  {time: 21, commits: 1},
+  {time: 22, commits: 0},
+  {time: 23, commits: 0},
+]
+30
 
 class GraphContainer extends Component {
   constructor(props) {
@@ -155,62 +182,60 @@ class GraphContainer extends Component {
 
         <div className="graphContainers">
         <VictoryChart className="graph" 
-          // theme={VictoryTheme.material} 
-          domainPadding={{ x: 15 }}
-          padding={{ left: 50, top: 50, right: 20, bottom: 50 }}>
-          <VictoryLabel x={0} y={29}
+        domainPadding={50}
+          theme={VictoryTheme.material} 
+          // padding={{ left: 50, top: 50, right: 20, bottom: 50 }}
+          >
+          {/* <VictoryLabel x={0} y={29}
             text="Additions/Deletions on repos"
-          />
+          /> */}
           <VictoryAxis
-            style={{ tickLabels: { angle: -50 } }}
-            tickFormat={["Pete's Memory Palace", "Peer Connect", "Pastchat", "Personal Website", "Webtorrent"]}
+            style={{ tickLabels: { fontSize: 10, angle: -50 } }}
+            tickValues={[1, 2, 3, 4, 5]}            
+            tickFormat={["Pete's Memory\n Palace", "Peer Connect", "Pastchat", "Website", "Webtorrent"]}
           />
           <VictoryAxis
             dependentAxis
             tickFormat={(x) => (`${x}\nLines`)}
           />
-          <VictoryStack>
-          <VictoryBar
-            barRatio={0.5}
-            data={additions}
-            x="Repository"
-            y="additions"
-          />
-          <VictoryBar
-            barRatio={0.5}
-            data={deletions}
-            x="Repository"
-            y="deletions"
-          />
+          <VictoryStack
+          xOffset={1}>
+            <VictoryBar
+              data={additions}
+              x="Repository"
+              y="additions"
+            />
+            <VictoryBar
+              data={deletions}
+              x="Repository"
+              y="deletions"
+            />
           </VictoryStack>
         </VictoryChart>
         <p>
           You sure had alot of repos under your belt. Wow so many deletions... AND ADDITIONS!
-          I'm surprised you love coding that much after so much line deletions and additions.
+          I'm surprised you love coding that much after so many line deletions and additions.
           Sounds like insanity to me.
         </p>
         </div>
 
         <div className="graphContainers">
 
-        <VictoryChart className="graph" 
-          theme={VictoryTheme.material} 
-          domainPadding={20}
-          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
-          <VictoryAxis
-            tickFormat={["Python", "Javascript", "C++", "Java"]}
-          />
-          <VictoryAxis
-            dependentAxis
-            tickFormat={(x) => (`${x}\nCommits`)}
-          />
-          <VictoryBar
-            data={data1}
-            x="language"
+        <VictoryChart className="graph"
+          padding={{ left: 50, top: 60, right: 60, bottom: 50 }}         
+          theme={VictoryTheme.material}>
+          <VictoryAxis tickValues={[0, 4, 8, 12, 16, 20]} 
+          tickFormat={["12AM", "4AM", "8AM", "12PM", "4PM", "8PM"]}/>
+          <VictoryAxis dependentAxis />
+          <VictoryLine
+            data={commitTimes}
+            x="time"
             y="commits"
           />
         </VictoryChart>
-        
+        <p>Wow it looks like you're the most efficient and committing in the afternoons. Hope 
+          this gives you more inspiration to code code, and did I mention code?
+        </p>
         </div>
 
         {/* <Graph />
