@@ -8,7 +8,9 @@ const authController = require('./auth/authController');
 const favicon = require('serve-favicon');
 
 const sequelize = require('./db/models/dbIndex');
-const sessionsController = require('./db/controllers/sessionsController')
+const sessionsController = require('./db/controllers/sessionsController');
+const usersController = require('./db/controllers/usersController');
+const commitsController = require('./db/controllers/commitsController');
 
 const app = express();
 
@@ -23,7 +25,10 @@ sequelize
   .authenticate()
   .then(() => {console.log('Connection established: successful')})
   .catch( err => {console.error('No luck connecting, here\'s my error:\n', err)});
-app.get('/poop', sessionsController.testAdd)
+// app.get('/internaldata/session', sessionsController.testAdd)
+// app.get('/internaldata/session', usersController.findOrCreate)
+app.get('/internaldata/posttest', console.log('hello'))
+
 // app.get('/', authController.checkCookie, dbController.read);
 
 app.get('/login', authController.login);

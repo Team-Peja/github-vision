@@ -3,7 +3,7 @@ const sequelize = require('../models/dbIndex');
 const Session = require('../models/sessions');
 
 const testAdd = ( (req,res) => {
-    console.log('sup')
+    console.log('in session testAdd ')
     Session.sync({force:false}).then(() =>{
     Session.create({
             login: '1234',
