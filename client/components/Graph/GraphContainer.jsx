@@ -17,20 +17,75 @@ class GraphContainer extends Component {
   render() {
     return (
       <div id="graphContainer" className="section padding">
-        <VictoryChart className="graph" theme={VictoryTheme.material} domainPadding={20}
+        <VictoryChart className="graph" 
+          theme={VictoryTheme.material} 
+          domainPadding={20}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
           <VictoryAxis
-          tickValues={[1, 2, 3, 4]}
-          tickFormat={["Python", "Javascript", "C++", "Java"]}
+            tickFormat={["Python", "Javascript", "C++", "Java"]}
           />
           <VictoryAxis
-          dependentAxis
-          tickFormat={(x) => (`${x}\nCommits`)}
+            dependentAxis
+            tickFormat={(x) => (`${x}\nCommits`)}
           />
           <VictoryBar
-          data={data}
-          x="language"
-          y="commits"
+            data={data}
+            x="language"
+            y="commits"
+          />
+        </VictoryChart>
+
+        <VictoryChart className="graph" 
+          theme={VictoryTheme.material} 
+          domainPadding={20}
+          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
+          <VictoryAxis
+            tickFormat={["Python", "Javascript", "C++", "Java"]}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(x) => (`${x}\nCommits`)}
+          />
+          <VictoryBar
+            data={data}
+            x="language"
+            y="commits"
+          />
+        </VictoryChart>
+
+        <VictoryChart className="graph" 
+          theme={VictoryTheme.material} 
+          domainPadding={20}
+          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
+          <VictoryAxis
+            tickFormat={["Python", "Javascript", "C++", "Java"]}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(x) => (`${x}\nCommits`)}
+          />
+          <VictoryBar
+            data={data}
+            x="language"
+            y="commits"
+          />
+        </VictoryChart>
+
+        <VictoryChart className="graph" 
+          theme={VictoryTheme.material} 
+          domainPadding={20}
+          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
+          <VictoryAxis
+            tickFormat={["Python", "Javascript", "C++", "Java"]}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(x) => (`${x}\nCommits`)}
+          />
+          <VictoryBar
+            data={data}
+            x="language"
+            y="commits"
           />
         </VictoryChart>
 
