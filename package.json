@@ -47,8 +47,11 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "moment": "^2.20.1",
+    "pg": "^6.4.2",
+    "pg-hstore": "^2.3.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "sequelize": "^4.32.2",
     "victory": "^0.24.5"
   }
 }
