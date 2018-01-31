@@ -1,8 +1,9 @@
 const axios = require('axios');
 const cryptoRandomString = require('crypto-random-string');
-const octokit = require('@octokit/rest')();
 require('dotenv').config();
-const query = require('./githubQuery');
+const initialQuery = require('../queries/initialQuery')
+const bigQuery = require('../queries/bigQuery');
+
 
 const checkCookie = (req, res, next) => {
   console.log(req.cookies);
@@ -40,71 +41,29 @@ const getToken = (req, res) => {
   )
   .then(response => {
     const accessToken = response.data.access_token;
-    axios.get(
-      'https://api.github.com/user',
-      { headers: { Authorization: `token ${accessToken}` }}
+    // const login = response.data.login;
+    // setCookie(req, res, login);
+    res.end();
+    axios.post(
+      'https://api.github.com/graphql',
+      { query: initialQuery },
+      { headers: { Authorization: `token ${accessToken}` }},
     )
-    // .then(response => getData(response, accessToken))
     .then(response => {
-      const login = response.data.login;
-      setCookie(req, res, login);
-      // octokit.repos.getStatsCommitActivity({ owner: login, repo:'imageprocessingapp' })
-      //   .then();
+      const userID = response.data.data.viewer.id;
       axios.post(
         'https://api.github.com/graphql',
-        { query },
+        { query: bigQuery(userID) },
         { headers: { Authorization: `token ${accessToken}` }},
       )
-      .then(response => console.log(JSON.stringify(response.data, null, 2)))
-    })
-    .catch(err => console.log('error: ', err));
-  })
-  .catch(err => console.log('error: ', err));
-}
-
-
-
-// probably don't need this, using graphql api now
-const getData = (response, accessToken) => {
-  const data = [];
-  const login = response.data.login;
-  
-  axios.get(
-    response.data.repos_url,
-    { headers: { Authorization: `token ${accessToken}` }}
-  )
-  .then(response => {
-    response.data.forEach(repo => {
-      axios.get(
-        repo.commits_url.slice(0, -6),
-        { headers: { Authorization: `token ${accessToken}` }}
-      )
       .then(response => {
-        response.data.forEach(commit => {
-          axios.get(
-            commit.url,
-            { headers: { Authorization: `token ${accessToken}` }}
-          )
-          .then(response => {
-            if (response.data.author && login === response.data.author.login) {
-              data.push({
-                sha: response.data.sha,
-                author: response.data.author.login,
-                stats: response.data.stats
-              });
-              // console.log('total additions: ', data.reduce((acc, val) => {
-              //   return acc.stats.additions + val.stats.additions;
-              // }, 0));
-              data.forEach(commit => console.log(commit.stats))
-            }
-          })
-          .catch(err => console.log(err));
-        })
+        console.log(JSON.stringify(response.data, null, 2));
       })
       .catch(err => console.log(err))
     })
+    .catch(err => console.log(err));
   })
-  .catch(err => console.log(err));
+  .catch(err => console.log('error: ', err));
 }
 
 
