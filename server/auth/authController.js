@@ -1,9 +1,8 @@
 const axios = require('axios');
 const cryptoRandomString = require('crypto-random-string');
 const octokit = require('@octokit/rest')();
-
 require('dotenv').config();
-
+const { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
 
 const checkCookie = (req, res, next) => {
   console.log(req.cookies);
@@ -12,7 +11,7 @@ const checkCookie = (req, res, next) => {
 }
 
 const login = (req, res, next) => {
-  res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&state=poop&scope=user%20repo`);
+  res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&state=poop&scope=user%20public_repo%20repo%20repo_deployment%20repo:status%20read:repo_hook%20read:org%20read:public_key%20read:gpg_key`);
 }
 
 const setCookie = (req, res, login) => {
@@ -49,13 +48,32 @@ const getToken = (req, res) => {
     .then(response => {
       const login = response.data.login;
       setCookie(req, res, login);
-      octokit.repos.getStatsCommitActivity({ owner: login, repo:'imageprocessingapp' })
-        .then();
+      // octokit.repos.getStatsCommitActivity({ owner: login, repo:'imageprocessingapp' })
+      //   .then();
+      axios.post(
+        'https://api.github.com/graphql',
+        { query },
+        { headers: { Authorization: `token ${accessToken}` }},
+      )
+      .then(response => console.log(JSON.stringify(response.data, null, 2)))
     })
     .catch(err => console.log('error: ', err));
   })
   .catch(err => console.log('error: ', err));
 }
+
+const query =
+`query {
+  viewer {
+    login
+    name
+      repositories(last: 100) {
+        nodes {
+          name
+      }
+    }
+  }
+}`
 
 
 const getData = (response, accessToken) => {
