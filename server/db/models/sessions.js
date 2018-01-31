@@ -1,3 +1,4 @@
+'use strict'
 const Sequelize = require('sequelize');
 const sequelize = require('./dbIndex.js');
 
@@ -11,7 +12,8 @@ const Session = sequelize.define('session', {
         type: Sequelize.STRING
     },
     expiration: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE, 
+        defaultValue: Sequelize.NOW
     }
 });
 

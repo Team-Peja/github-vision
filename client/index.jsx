@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import './styles/app.less';
 
 //container
-import Container from './components/Container.jsx';
+import Container from './components/container.jsx';
 
 class Handler extends Component {
   render() {
