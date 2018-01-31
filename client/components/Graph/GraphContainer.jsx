@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { VictoryBar, VictoryChart, VictoryAxis,
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryPie,
 VictoryTheme, VictoryLabel, VictoryLine, VictoryLegend, VictoryStack } from 'victory';
 import moment from 'moment';
 
@@ -50,10 +50,22 @@ const deletions = [
 
 
 class GraphContainer extends Component {
-  render() {
-    return (
-      <div id="graphContainer" className="section padding">
+  constructor(props) {
+    super(props);
+    this.state = { bar: true }
+    this.barPieButton = this.barPieButton.bind(this);
+  }
+
+  barPieButton() {
+    let opposite = !this.state.bar;
+    this.setState({ bar: opposite });
+  }
+
+  barToPie() {
+    if (this.state.bar) {
+      return (
         <VictoryChart className="graph" 
+          animate={{ duration: 1000, easing: "bounce" }}
           theme={VictoryTheme.material} 
           domainPadding={20}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
@@ -73,8 +85,36 @@ class GraphContainer extends Component {
             y="commits"
           />
         </VictoryChart>
+      )
+    } else {
+      return (
+        <div className="VictoryContainer graph">
+          <VictoryPie
+            padding={{ left: 80, top: 50, right: 60, bottom: 50 }}
+            animate={{ duration: 1000, easing: "bounce"}}
+            data={data1}
+            style={{ labels: { fontSize: 8}}}
+            labels={(data) => `${data.language}\nCommits: ${data.commits}`}
+            x="language"
+            y="commits"
+          />
+          </div>
+      )
+    }
+  }
 
+  render() {
+    return (
+      <div id="graphContainer" className="section padding">
+        <div className="graphContainers">
+          <button onClick={this.barPieButton}>click me</button>
+          {this.barToPie()}
+          <p>Oh boy person you really really did write alot.</p>
+        </div>
+
+        <div className="graphContainers">
         <VictoryChart className="graph" 
+          animate={{ duration: 1000, easing: "poly" }}
           theme={VictoryTheme.material}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>          
           <VictoryLabel x={0} y={29}
@@ -99,23 +139,30 @@ class GraphContainer extends Component {
             x="date"
             y="commits"
           />
-           <VictoryLine
+          <VictoryLine
             style={{ data: { stroke: "red"} }}
             data={timeTwo}
             x="date"
             y="commits"
           />
-        </VictoryChart>
+          </VictoryChart>
+          <p>
+            Wow you worked with that many languages? You really are a cool bean. 
+            Here you deserve a sticker form the sticker drawer for all your cool work.
+          </p>
+        </div>
 
 
+        <div className="graphContainers">
         <VictoryChart className="graph" 
-          theme={VictoryTheme.material} 
-          domainPadding={50}
-          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
+          // theme={VictoryTheme.material} 
+          domainPadding={{ x: 15 }}
+          padding={{ left: 50, top: 50, right: 20, bottom: 50 }}>
           <VictoryLabel x={0} y={29}
             text="Additions/Deletions on repos"
           />
           <VictoryAxis
+            style={{ tickLabels: { angle: -50 } }}
             tickFormat={["Pete's Memory Palace", "Peer Connect", "Pastchat", "Personal Website", "Webtorrent"]}
           />
           <VictoryAxis
@@ -124,17 +171,27 @@ class GraphContainer extends Component {
           />
           <VictoryStack>
           <VictoryBar
+            barRatio={0.5}
             data={additions}
             x="Repository"
             y="additions"
           />
           <VictoryBar
+            barRatio={0.5}
             data={deletions}
             x="Repository"
             y="deletions"
           />
           </VictoryStack>
         </VictoryChart>
+        <p>
+          You sure had alot of repos under your belt. Wow so many deletions... AND ADDITIONS!
+          I'm surprised you love coding that much after so much line deletions and additions.
+          Sounds like insanity to me.
+        </p>
+        </div>
+
+        <div className="graphContainers">
 
         <VictoryChart className="graph" 
           theme={VictoryTheme.material} 
@@ -153,6 +210,8 @@ class GraphContainer extends Component {
             y="commits"
           />
         </VictoryChart>
+        
+        </div>
 
         {/* <Graph />
         <Graph />
