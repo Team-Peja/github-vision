@@ -2,7 +2,7 @@ const axios = require('axios');
 const cryptoRandomString = require('crypto-random-string');
 const octokit = require('@octokit/rest')();
 require('dotenv').config();
-const { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
+const query = require('./githubQuery');
 
 const checkCookie = (req, res, next) => {
   console.log(req.cookies);
@@ -62,20 +62,9 @@ const getToken = (req, res) => {
   .catch(err => console.log('error: ', err));
 }
 
-const query =
-`query {
-  viewer {
-    login
-    name
-      repositories(last: 100) {
-        nodes {
-          name
-      }
-    }
-  }
-}`
 
 
+// probably don't need this, using graphql api now
 const getData = (response, accessToken) => {
   const data = [];
   const login = response.data.login;
