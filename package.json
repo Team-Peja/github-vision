@@ -34,12 +34,14 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "nodemon": "^1.14.11",
+    "style-loader": "^0.19.1",
     "serve-favicon": "^2.4.5",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.0"
   },
   "homepage": "https://github.com/Team-Peja/github-vision#readme",
   "dependencies": {
+    "moment": "^2.20.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "react": "^16.2.0",
