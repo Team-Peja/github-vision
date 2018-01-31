@@ -15,33 +15,13 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, '../build/assets/images', 'glasses.ico')));
 app.use('/build', express.static(path.join(__dirname, '/../', 'build')));
 
-app.get('/', (req, res) => res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&state=poop`));
+// app.get('/', authController.checkCookie, dbController.read);
 
-app.get('/callback', (req, res) => {
-  console.log(req.query.code, req.query.state);
-  const code = req.query.code;
-  const client_id = process.env.CLIENT_ID;
-  const client_secret = process.env.CLIENT_SECRET;
-  // possible to also supply state and redirect_uri at this step
-  res.end();
+app.get('/login', authController.login);
 
-  axios.post(
-    'https://github.com/login/oauth/access_token',
-    { client_id, client_secret, code },
-    { headers: { 'Accept': 'application/json' }})
-  .then(response => {
-    const accessToken = response.data.access_token;
+app.get('/callback', authController.getToken);
 
-    axios.get(
-      'https://api.github.com/repos/erikwlarsen/woven-images',
-      { headers: { 'Authorization': `token ${accessToken}` }})
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(err => console.log('error: ', err));
-  })
-  .catch(err =>console.log('error: ', err));
-});
+app.get('/storeCookie', authController.storeCookie);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));

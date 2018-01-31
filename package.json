@@ -19,6 +19,7 @@
     "url": "https://github.com/Team-Peja/github-vision/issues"
   },
   "devDependencies": {
+    "@octokit/rest": "^14.0.7",
     "axios": "^0.17.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -26,6 +27,7 @@
     "babel-preset-react": "^6.24.1",
     "cookie-parser": "^1.4.3",
     "copy-webpack-plugin": "^4.3.1",
+    "crypto-random-string": "^1.0.0",
     "css-loader": "^0.28.9",
     "dotenv": "^5.0.0",
     "file-loader": "^1.1.6",
@@ -34,8 +36,8 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "nodemon": "^1.14.11",
-    "style-loader": "^0.19.1",
     "serve-favicon": "^2.4.5",
+    "style-loader": "^0.19.1",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.0"
   },
