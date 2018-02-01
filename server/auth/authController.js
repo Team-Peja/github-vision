@@ -14,20 +14,6 @@ const login = (req, res, next) => {
   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&state=poop&scope=user%20public_repo%20repo%20repo_deployment%20repo:status%20read:repo_hook%20read:org%20read:public_key%20read:gpg_key`);
 }
 
-const setCookie = (req, res, login) => {
-  res.cookie('login', login, { httpOnly: true, maxAge: 86400000 }); // 1 day
-  res.cookie('session', cryptoRandomString(20), { httpOnly: true, maxAge: 86400000 });
-  console.log('in setCookie')
-  res.redirect('/storeCookie');
-}
-
-const storeCookie = (req, res, next) => {
-  // integrate with pete on this
-  console.log(req.cookies);
-  console.log('hi');
-  res.redirect('/');
-}
-
 const getToken = (req, res, next) => {
   console.log(req.query);
   const code = req.query.code;
@@ -51,30 +37,30 @@ const getToken = (req, res, next) => {
       res.locals.userId = response.data.data.viewer.id;
       res.locals.login = response.data.data.viewer.login;
       res.locals.accessToken = accessToken;
-      // const userId = response.data.data.viewer.id;
-      // const login = response.data.data.viewer.login;
       next();
-      axios.post(
-        'https://api.github.com/graphql',
-        { query: bigQuery(userId) },
-        { headers: { Authorization: `token ${accessToken}` }},
-      )
-      .then(response => {
-        const result = formatData(response.data.data.viewer);
-      })
-      .catch(err => console.log(err))
     })
     .catch(err => console.log(err));
   })
   .catch(err => console.log('error: ', err));
 }
 
+const queryDB = (req, res, next) => {
+  console.log('in queryDB')
+  axios.post(
+    'https://api.github.com/graphql',
+    { query: bigQuery(res.locals.userId) },
+    { headers: { Authorization: `token ${res.locals.accessToken}` }},
+  ).then(response => {
+    const formattedQueryData = formatData(response.data.data.viewer);
+    res.json(formattedQueryData);
+  })
+}
 
 const formatData = json => {
   const result = {
+    isLoggedIn: true,
     user: {},
     commits: [],
-    session: {},
   }
 
   const login = json.login;
@@ -132,11 +118,9 @@ const formatData = json => {
     updatedAt: userUpdatedAt,
   }
 
-
-  // console.log(JSON.stringify(result, null, 2));
-  
+  return result;
 }
 
 
-module.exports = { login, getToken, checkCookie, storeCookie };
+module.exports = { login, getToken, queryDB };
 
