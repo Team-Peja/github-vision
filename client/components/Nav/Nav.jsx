@@ -13,7 +13,7 @@ class Nav extends Component {
         <nav id="navigation" className="margin-right-xl">
         <ul className="fw-600 nav-container">
           <li className="hide-nav-link"><a href="">How it Works</a></li>
-          <li className="hide-nav-link"><a href="">Log in with Github!</a></li>
+          <li className="hide-nav-link"><a href="/login">Log in with Github!</a></li>
         </ul>
         </nav>
       </div>
