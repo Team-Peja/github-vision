@@ -29,6 +29,8 @@ class Main extends Component {
   }
   
   render() {
+    console.log(this.props.userInfo);
+    console.log(this.props.commits);
     return (
     <div id="main" className="section padding">
       <div id="instructions">

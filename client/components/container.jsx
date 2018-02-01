@@ -10,20 +10,20 @@ import Footer from './Footer/Footer.jsx';
 class Container extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: false, hasCookie: undefined };
+    this.state = { user: false, userInfo: {}, commits: [] };
   }
 
   //do fetch for authorization here
   componentWillMount() {
     fetch('/checkCookie', {credentials: 'include'}).then(response => response.json()).then(data => {
-      this.setState({ user: data.isLoggedIn})});
+      this.setState({ user: data.isLoggedIn, userInfo: data.user, commits: data.commits})});
   }
 
   render() {
     return (
     <div id="container">
-      <Nav user={this.state.user} cookie={this.state.hasCookie}/>
-      <Main user={this.state.user} cookie={this.state.hasCookie}/>
+      <Nav user={this.state.user} />
+      <Main user={this.state.user} commits={this.state.commits} userInfo={this.state.userInfo} />
       <Footer />
     </div>
     )
