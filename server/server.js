@@ -18,19 +18,16 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, '../build/assets/images', 'glasses.ico')));
 app.use('/build', express.static(path.join(__dirname, '/../', 'build')));
 
-
 sequelize
   .authenticate()
   .then(() => {console.log('Connection established: successful')})
   .catch( err => {console.error('No luck connecting, here\'s my error:\n', err)});
-app.get('/poop', sessionsController.testAdd)
-// app.get('/', authController.checkCookie, dbController.read);
 
 app.get('/login', authController.login);
 
-app.get('/callback', authController.getToken); // authController.setCookie, authController.sendData ?
+app.get('/callback', authController.getToken, sessionsController.storeAndSendCookie);
 
-app.get('/storeCookie', authController.storeCookie);
+app.get('/checkCookie', sessionsController.checkCookie, authController.queryDB);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
