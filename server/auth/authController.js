@@ -11,7 +11,6 @@ const checkCookie = (req, res, next) => {
 }
 
 const login = (req, res, next) => {
-  console.log('got to login')
   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&state=poop&scope=user%20public_repo%20repo%20repo_deployment%20repo:status%20read:repo_hook%20read:org%20read:public_key%20read:gpg_key`);
 }
 
@@ -30,7 +29,7 @@ const storeCookie = (req, res, next) => {
 }
 
 const getToken = (req, res, next) => {
-  console.log('got to getToken')
+  console.log(req.query);
   const code = req.query.code;
   const client_id = process.env.CLIENT_ID;
   const client_secret = process.env.CLIENT_SECRET;
@@ -42,21 +41,26 @@ const getToken = (req, res, next) => {
   )
   .then(response => {
     const accessToken = response.data.access_token;
-    res.redirect('/'); // may need to move this
+    console.log(response.data);
     axios.post(
       'https://api.github.com/graphql',
       { query: initialQuery },
       { headers: { Authorization: `token ${accessToken}` }},
     )
     .then(response => {
-      const userId = response.data.data.viewer.id;
+      res.locals.userId = response.data.data.viewer.id;
+      res.locals.login = response.data.data.viewer.login;
+      res.locals.accessToken = accessToken;
+      // const userId = response.data.data.viewer.id;
+      // const login = response.data.data.viewer.login;
+      next();
       axios.post(
         'https://api.github.com/graphql',
         { query: bigQuery(userId) },
         { headers: { Authorization: `token ${accessToken}` }},
       )
       .then(response => {
-        console.log(formatData(response.data.data.viewer));
+        const result = formatData(response.data.data.viewer);
       })
       .catch(err => console.log(err))
     })
@@ -129,7 +133,7 @@ const formatData = json => {
   }
 
 
-  console.log(JSON.stringify(result, null, 2));
+  // console.log(JSON.stringify(result, null, 2));
   
 }
 
