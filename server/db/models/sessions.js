@@ -11,6 +11,12 @@ const Session = sequelize.define('session', {
     sessionId: {
         type: Sequelize.STRING
     },
+    userId: {
+        type: Sequelize.STRING
+    },
+    accessToken: {
+        type: Sequelize.STRING
+    },
     expiration: {
         type: Sequelize.DATE, 
         defaultValue: Sequelize.NOW
