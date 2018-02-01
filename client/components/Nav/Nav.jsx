@@ -8,8 +8,7 @@ class Nav extends Component {
   }
 
   checkLogin() {
-    console.log(this.props.user);
-    if (!this.props.user) {
+    if (!document.cookie.includes('visionLogin')) {
       return (
       <nav id="navigation" className="margin-right-xl">
       <ul className="fw-600 nav-container">
@@ -17,7 +16,7 @@ class Nav extends Component {
         <li className="hide-nav-link"><a href="/login">Log in with Github!</a></li>
       </ul>
       </nav> )
-    } else {
+    } else if (document.cookie.includes('visionLogin')) {
       return (
       <nav id="navigation" className="margin-right-xl">
       <ul className="fw-600 nav-container">
