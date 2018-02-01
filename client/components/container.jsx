@@ -10,18 +10,18 @@ import Footer from './Footer/Footer.jsx';
 class Container extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: {}};
+    this.state = { user: false };
   }
 
   //do fetch for authorization here
-  componentWillMount() {
-
+  componentDidMount() {
+    fetch('/checkCookie').then(response => {console.log(response)});
   }
 
   render() {
     return (
     <div id="container">
-      <Nav />
+      <Nav user={this.state.user}/>
       <Main user={this.state.user}/>
       <Footer />
     </div>

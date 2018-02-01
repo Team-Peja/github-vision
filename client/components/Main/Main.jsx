@@ -12,8 +12,7 @@ class Main extends Component {
 
   displayBody() {
     console.log(this.props.user);
-    let bool = false;
-    if (bool) {
+    if (this.props.user) {
       return <Description />
     } else {
       return <GraphContainer />
