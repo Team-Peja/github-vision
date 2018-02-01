@@ -19,13 +19,13 @@ const Commit = sequelize.define('commit', {
         defaultValue: Sequelize.NOW
     },
     total: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     added: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     deleted: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     languages: {
         type: Sequelize.JSON

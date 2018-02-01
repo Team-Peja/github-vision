@@ -20,14 +20,17 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, '../build/assets/images', 'glasses.ico')));
 app.use('/build', express.static(path.join(__dirname, '/../', 'build')));
 
-
+/* ------------ START Postgres routes section ---------- */
 sequelize
   .authenticate()
   .then(() => {console.log('Connection established: successful')})
   .catch( err => {console.error('No luck connecting, here\'s my error:\n', err)});
-// app.get('/internaldata/session', sessionsController.testAdd)
-// app.get('/internaldata/session', usersController.findOrCreate)
-app.get('/internaldata/posttest', console.log('hello'))
+app.get('/internaldata/session', sessionsController.addSession)
+// app.get('/internaldata/commits', sessionsController.bulkCommit)
+
+app.post('/internaldata/userlogin', usersController.findOrCreate)
+
+/* ------------ END postgres routes section ------------ */
 
 // app.get('/', authController.checkCookie, dbController.read);
 

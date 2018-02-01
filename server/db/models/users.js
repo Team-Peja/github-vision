@@ -1,14 +1,14 @@
 'use strict'
 const Sequelize = require('sequelize');
+const sequelize = require('./dbIndex.js');
 
-
-const User = sequelize.define('User', {
+const User = sequelize.define('user', {
     login: {
         type: Sequelize.STRING,
         primaryKey: true
     },
     ghUniqueId: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     avatarUrl: {
         type: Sequelize.STRING
@@ -17,13 +17,13 @@ const User = sequelize.define('User', {
         type: Sequelize.STRING
     },
     publicRepos: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     followers: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     following: {
-        type: Sequelize.INT
+        type: Sequelize.INTEGER
     },
     createdAt: {
         type: Sequelize.DATE,
@@ -34,9 +34,8 @@ const User = sequelize.define('User', {
         defaultValue: Sequelize.NOW
     },
     numberLogins: { // Counts number of times user has logged into our site
-        type: Sequelize.INT,
-        autoIncrement: true,
-        defaultValue: 0
+        type: Sequelize.INTEGER,
+        autoIncrement: true
     }
 });
 
