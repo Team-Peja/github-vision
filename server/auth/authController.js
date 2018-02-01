@@ -53,6 +53,8 @@ const queryDB = (req, res, next) => {
   ).then(response => {
     const formattedQueryData = formatData(response.data.data.viewer);
     res.json(formattedQueryData);
+  }).catch(err =>{
+    console.log(err)
   })
 }
 
@@ -88,24 +90,26 @@ const formatData = json => {
         }
       }),
     }
-    const repoCommitsCount = repo.ref.target.history.totalCount;
-    const repoCommits = repo.ref.target.history.edges;
+    if(repo.ref){
+      const repoCommitsCount = repo.ref.target.history.totalCount;
+      const repoCommits = repo.ref.target.history.edges;
 
-    repoCommits.forEach((commit) => {
-      result.commits.push({
-        sha: commit.node.id,
-        added: commit.node.additions,
-        deleted: commit.node.deletions,
-        total: commit.node.deletions + commit.node.additions,
-        date: commit.node.authoredDate,
-        languages: repoLanguages,
-        repoName: repoName,
-        repoId: repoId,
-        login: login,
+      repoCommits.forEach((commit) => {
+        result.commits.push({
+          sha: commit.node.id,
+          added: commit.node.additions,
+          deleted: commit.node.deletions,
+          total: commit.node.deletions + commit.node.additions,
+          date: commit.node.authoredDate,
+          languages: repoLanguages,
+          repoName: repoName,
+          repoId: repoId,
+          login: login,
+        })
       })
-    })
+    }
   })
-  
+
   result.user = {
     login: login,
     ghUniqueId: userId,
