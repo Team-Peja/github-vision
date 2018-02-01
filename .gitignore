@@ -10,3 +10,4 @@ build
 build/bundle.js
 .env
 .vscode
+config.json
