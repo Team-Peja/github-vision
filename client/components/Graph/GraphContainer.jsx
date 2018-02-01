@@ -130,6 +130,8 @@ class GraphContainer extends Component {
   }
 
   render() {
+    console.log(this.props.commits);
+    console.log(this.props.userInfo);
     return (
       <div id="graphContainer" className="section padding">
         <div className="graphContainers">

@@ -23,14 +23,12 @@ class Main extends Component {
       if (!this.props.user) {
         return <Description />
       } else {
-        return <GraphContainer />
+        return <GraphContainer commits={this.props.commits} userInfo={this.props.userInfo} />
       }
     }
   }
   
   render() {
-    console.log(this.props.userInfo);
-    console.log(this.props.commits);
     return (
     <div id="main" className="section padding">
       <div id="instructions">
