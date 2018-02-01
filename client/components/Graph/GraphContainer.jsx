@@ -66,7 +66,7 @@ const commitTimes = [
   {time: 14, commits: 4},
   {time: 15, commits: 6},
   {time: 16, commits: 0},
-  {time: 17, commits: 6},
+  {time: 17, commits: 2},
   {time: 18, commits: 4},
   {time: 19, commits: 1},
   {time: 20, commits: 2},
@@ -74,7 +74,6 @@ const commitTimes = [
   {time: 22, commits: 0},
   {time: 23, commits: 0},
 ]
-30
 
 class GraphContainer extends Component {
   constructor(props) {
@@ -118,8 +117,8 @@ class GraphContainer extends Component {
         <div className="VictoryContainer graph">
           <VictoryPie
             padding={{ left: 80, top: 50, right: 60, bottom: 50 }}
-            animate={{ duration: 1000, easing: "bounce"}}
             data={data1}
+            innerRadius={100}
             style={{ labels: { fontSize: 8}}}
             labels={(data) => `${data.language}\nCommits: ${data.commits}`}
             x="language"
@@ -148,8 +147,6 @@ class GraphContainer extends Component {
             text="Language Commits over time"
           />
           <VictoryLegend x={155} y={50}
-            title="Legend"
-            centerTitle
             orientation="horizontal"
             gutter={10}
             style={{ border: { stroke: "black" }, title: {fontSize: 12 } }}
@@ -200,7 +197,7 @@ class GraphContainer extends Component {
           />
           <VictoryStack
           xOffset={1}>
-            <VictoryBar
+            <VictoryBar      
               data={additions}
               x="Repository"
               y="additions"
@@ -224,9 +221,9 @@ class GraphContainer extends Component {
         <VictoryChart className="graph"
           padding={{ left: 50, top: 60, right: 60, bottom: 50 }}         
           theme={VictoryTheme.material}>
-          <VictoryAxis tickValues={[0, 4, 8, 12, 16, 20]} 
+          <VictoryAxis tickValues={[0, 4, 8, 12, 16, 20]}
           tickFormat={["12AM", "4AM", "8AM", "12PM", "4PM", "8PM"]}/>
-          <VictoryAxis dependentAxis />
+          <VictoryAxis dependentAxis tickFormat={(x) => (`${x}\nCommits`)}/>
           <VictoryLine
             data={commitTimes}
             x="time"
