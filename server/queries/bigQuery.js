@@ -42,12 +42,7 @@ module.exports = function(id) {
                           id
                           additions
                           deletions
-                          author {
-                            user {
-                              login
-                            }
-                            date
-                          }
+                          authoredDate
                         }
                       }
                     }
