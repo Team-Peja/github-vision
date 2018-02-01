@@ -15,7 +15,9 @@ class Container extends Component {
 
   //do fetch for authorization here
   componentDidMount() {
-    fetch('/checkCookie').then(response => {console.log(response)});
+    fetch('/checkCookie', {credentials: 'include'}).then(response => response.json()).then(data => {
+      this.setState({ user: data.isLoggedIn})});
+    console.log(this.state);
   }
 
   render() {

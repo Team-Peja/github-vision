@@ -8,19 +8,22 @@ class Nav extends Component {
   }
 
   checkLogin() {
+    console.log(this.props.user);
     if (!this.props.user) {
+      return (
       <nav id="navigation" className="margin-right-xl">
       <ul className="fw-600 nav-container">
         <li className="hide-nav-link"><a href="">How it Works</a></li>
         <li className="hide-nav-link"><a href="/login">Log in with Github!</a></li>
       </ul>
-      </nav>
+      </nav> )
     } else {
+      return (
       <nav id="navigation" className="margin-right-xl">
       <ul className="fw-600 nav-container">
         <li className="hide-nav-link"><a href="">You are logged in!</a></li>
       </ul>
-      </nav>
+      </nav> )
     }
   }
 
