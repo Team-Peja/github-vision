@@ -8,7 +8,9 @@ const authController = require('./auth/authController');
 const favicon = require('serve-favicon');
 
 const sequelize = require('./db/models/dbIndex');
-const sessionsController = require('./db/controllers/sessionsController')
+const sessionsController = require('./db/controllers/sessionsController');
+const usersController = require('./db/controllers/usersController');
+const commitsController = require('./db/controllers/commitsController');
 
 const app = express();
 
@@ -18,10 +20,12 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, '../build/assets/images', 'glasses.ico')));
 app.use('/build', express.static(path.join(__dirname, '/../', 'build')));
 
+/* ------------ START Postgres routes section ---------- */
 sequelize
   .authenticate()
   .then(() => {console.log('Connection established: successful')})
   .catch( err => {console.error('No luck connecting, here\'s my error:\n', err)});
+/* ------------ END Postgres routes section ---------- */
 
 app.get('/login', authController.login);
 
