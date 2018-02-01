@@ -25,20 +25,13 @@ sequelize
   .authenticate()
   .then(() => {console.log('Connection established: successful')})
   .catch( err => {console.error('No luck connecting, here\'s my error:\n', err)});
-app.get('/internaldata/session', sessionsController.addSession)
-// app.get('/internaldata/commits', sessionsController.bulkCommit)
-
-app.post('/internaldata/userlogin', usersController.findOrCreate)
-
-/* ------------ END postgres routes section ------------ */
-
-// app.get('/', authController.checkCookie, dbController.read);
+/* ------------ END Postgres routes section ---------- */
 
 app.get('/login', authController.login);
 
-app.get('/callback', authController.getToken); // authController.setCookie, authController.sendData ?
+app.get('/callback', authController.getToken, sessionsController.storeAndSendCookie);
 
-app.get('/storeCookie', authController.storeCookie);
+app.get('/checkCookie', sessionsController.checkCookie, authController.queryDB);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
