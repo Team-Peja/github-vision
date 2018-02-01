@@ -1,2 +1,3 @@
 # github-vision
-visualizer for github
+
+Visualizer for github.
