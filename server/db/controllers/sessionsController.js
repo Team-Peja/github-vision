@@ -26,8 +26,8 @@ const storeAndSendCookie = (req, res, next) => {
       accessToken: res.locals.accessToken,
     })
     .then(session => {
-      res.cookie('visionLogin', res.locals.login, { httpOnly: true, maxAge: 86400000 });
-      res.cookie('visionSessionId', res.locals.sessionId, { httpOnly: true, maxAge: 86400000 });
+      res.cookie('visionLogin', res.locals.login, { httpOnly: false, maxAge: 86400000 });
+      res.cookie('visionSessionId', res.locals.sessionId, { httpOnly: false, maxAge: 86400000 });
       res.redirect('/');
     })
     .catch(err => console.log(err));

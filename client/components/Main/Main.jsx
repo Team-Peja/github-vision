@@ -11,12 +11,20 @@ class Main extends Component {
   }
 
   displayBody() {
+    console.log(this.props.hasCookie);
     console.log(this.props.user);
-    let bool = false;
-    if (bool) {
-      return <Description />
+    if (document.cookie.includes('visionLogin') && !this.props.user) {
+      return (
+        <div>
+          <img id="loading" className="section paddingr" style={{width: '500px' }} src="https://static.colorofchange.org/static/v3/images/loading-circle.gif" />
+        </div>
+      ) 
     } else {
-      return <GraphContainer />
+      if (!this.props.user) {
+        return <Description />
+      } else {
+        return <GraphContainer />
+      }
     }
   }
   
