@@ -28,7 +28,7 @@ app.get('/poop', sessionsController.testAdd)
 
 app.get('/login', authController.login);
 
-app.get('/callback', authController.getToken);
+app.get('/callback', authController.getToken); // authController.setCookie, authController.sendData ?
 
 app.get('/storeCookie', authController.storeCookie);
 
