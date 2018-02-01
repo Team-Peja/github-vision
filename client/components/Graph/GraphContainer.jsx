@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { VictoryBar, VictoryChart, VictoryAxis,
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryPie,
 VictoryTheme, VictoryLabel, VictoryLine, VictoryLegend, VictoryStack } from 'victory';
 import moment from 'moment';
 
@@ -48,12 +48,50 @@ const deletions = [
   {repository: "Webtorrent", deletions: 1144}
 ]
 
+const commitTimes = [
+  {time: 0, commits: 0},
+  {time: 1, commits: 0},
+  {time: 2, commits: 0},
+  {time: 3, commits: 0},
+  {time: 4, commits: 0},
+  {time: 5, commits: 0},
+  {time: 6, commits: 0},
+  {time: 7, commits: 0},
+  {time: 8, commits: 0},
+  {time: 9, commits: 2},
+  {time: 10, commits: 4},
+  {time: 11, commits: 4},
+  {time: 12, commits: 0},
+  {time: 13, commits: 6},
+  {time: 14, commits: 4},
+  {time: 15, commits: 6},
+  {time: 16, commits: 0},
+  {time: 17, commits: 2},
+  {time: 18, commits: 4},
+  {time: 19, commits: 1},
+  {time: 20, commits: 2},
+  {time: 21, commits: 1},
+  {time: 22, commits: 0},
+  {time: 23, commits: 0},
+]
 
 class GraphContainer extends Component {
-  render() {
-    return (
-      <div id="graphContainer" className="section padding">
+  constructor(props) {
+    super(props);
+    this.state = { bar: true }
+    this.barPieButton = this.barPieButton.bind(this);
+  }
+
+  barPieButton() {
+    let opposite = !this.state.bar;
+    this.setState({ bar: opposite });
+  }
+
+  barToPie() {
+    if (this.state.bar) {
+      return (
         <VictoryChart className="graph" 
+          animate={{ duration: 1000, easing: "bounce" }}
           theme={VictoryTheme.material} 
           domainPadding={20}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
@@ -73,16 +111,42 @@ class GraphContainer extends Component {
             y="commits"
           />
         </VictoryChart>
+      )
+    } else {
+      return (
+        <div className="VictoryContainer graph">
+          <VictoryPie
+            padding={{ left: 80, top: 50, right: 60, bottom: 50 }}
+            data={data1}
+            innerRadius={100}
+            style={{ labels: { fontSize: 8}}}
+            labels={(data) => `${data.language}\nCommits: ${data.commits}`}
+            x="language"
+            y="commits"
+          />
+          </div>
+      )
+    }
+  }
 
+  render() {
+    return (
+      <div id="graphContainer" className="section padding">
+        <div className="graphContainers">
+          <button onClick={this.barPieButton}>click me</button>
+          {this.barToPie()}
+          <p>Oh boy person you really really did write alot.</p>
+        </div>
+
+        <div className="graphContainers">
         <VictoryChart className="graph" 
+          animate={{ duration: 1000, easing: "poly" }}
           theme={VictoryTheme.material}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>          
           <VictoryLabel x={0} y={29}
             text="Language Commits over time"
           />
           <VictoryLegend x={155} y={50}
-            title="Legend"
-            centerTitle
             orientation="horizontal"
             gutter={10}
             style={{ border: { stroke: "black" }, title: {fontSize: 12 } }}
@@ -99,60 +163,77 @@ class GraphContainer extends Component {
             x="date"
             y="commits"
           />
-           <VictoryLine
+          <VictoryLine
             style={{ data: { stroke: "red"} }}
             data={timeTwo}
             x="date"
             y="commits"
           />
-        </VictoryChart>
+          </VictoryChart>
+          <p>
+            Wow you worked with that many languages? You really are a cool bean. 
+            Here you deserve a sticker form the sticker drawer for all your cool work.
+          </p>
+        </div>
 
 
+        <div className="graphContainers">
         <VictoryChart className="graph" 
+        domainPadding={50}
           theme={VictoryTheme.material} 
-          domainPadding={50}
-          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
-          <VictoryLabel x={0} y={29}
+          // padding={{ left: 50, top: 50, right: 20, bottom: 50 }}
+          >
+          {/* <VictoryLabel x={0} y={29}
             text="Additions/Deletions on repos"
-          />
+          /> */}
           <VictoryAxis
-            tickFormat={["Pete's Memory Palace", "Peer Connect", "Pastchat", "Personal Website", "Webtorrent"]}
+            style={{ tickLabels: { fontSize: 10, angle: -50 } }}
+            tickValues={[1, 2, 3, 4, 5]}            
+            tickFormat={["Pete's Memory\n Palace", "Peer Connect", "Pastchat", "Website", "Webtorrent"]}
           />
           <VictoryAxis
             dependentAxis
             tickFormat={(x) => (`${x}\nLines`)}
           />
-          <VictoryStack>
-          <VictoryBar
-            data={additions}
-            x="Repository"
-            y="additions"
-          />
-          <VictoryBar
-            data={deletions}
-            x="Repository"
-            y="deletions"
-          />
+          <VictoryStack
+          xOffset={1}>
+            <VictoryBar      
+              data={additions}
+              x="Repository"
+              y="additions"
+            />
+            <VictoryBar
+              data={deletions}
+              x="Repository"
+              y="deletions"
+            />
           </VictoryStack>
         </VictoryChart>
+        <p>
+          You sure had alot of repos under your belt. Wow so many deletions... AND ADDITIONS!
+          I'm surprised you love coding that much after so many line deletions and additions.
+          Sounds like insanity to me.
+        </p>
+        </div>
 
-        <VictoryChart className="graph" 
-          theme={VictoryTheme.material} 
-          domainPadding={20}
-          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
-          <VictoryAxis
-            tickFormat={["Python", "Javascript", "C++", "Java"]}
-          />
-          <VictoryAxis
-            dependentAxis
-            tickFormat={(x) => (`${x}\nCommits`)}
-          />
-          <VictoryBar
-            data={data1}
-            x="language"
+        <div className="graphContainers">
+
+        <VictoryChart className="graph"
+          padding={{ left: 50, top: 60, right: 60, bottom: 50 }}         
+          theme={VictoryTheme.material}>
+          <VictoryAxis tickValues={[0, 4, 8, 12, 16, 20]}
+          tickFormat={["12AM", "4AM", "8AM", "12PM", "4PM", "8PM"]}/>
+          <VictoryAxis dependentAxis tickFormat={(x) => (`${x}\nCommits`)}/>
+          <VictoryLine
+            data={commitTimes}
+            x="time"
             y="commits"
           />
         </VictoryChart>
+        <p>Wow it looks like you're the most efficient and committing in the afternoons. Hope 
+          this gives you more inspiration to code code, and did I mention code?
+        </p>
+        </div>
 
         {/* <Graph />
         <Graph />
