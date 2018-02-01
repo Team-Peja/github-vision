@@ -23,7 +23,7 @@ class Main extends Component {
       if (!this.props.user) {
         return <Description />
       } else {
-        return <GraphContainer />
+        return <GraphContainer commits={this.props.commits} userInfo={this.props.userInfo} />
       }
     }
   }
