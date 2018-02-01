@@ -75,6 +75,33 @@ const commitTimes = [
   {time: 23, commits: 0},
 ]
 
+const commitTimes1 = [
+  {time: 0, commits: 0},
+  {time: 1, commits: 0},
+  {time: 2, commits: 0},
+  {time: 3, commits: 0},
+  {time: 4, commits: 0},
+  {time: 5, commits: 0},
+  {time: 6, commits: 0},
+  {time: 7, commits: 0},
+  {time: 8, commits: 0},
+  {time: 9, commits: 0},
+  {time: 10, commits: 0},
+  {time: 11, commits: 0},
+  {time: 12, commits: 0},
+  {time: 13, commits: 0},
+  {time: 14, commits: 0},
+  {time: 15, commits: 0},
+  {time: 16, commits: 0},
+  {time: 17, commits: 0},
+  {time: 18, commits: 0},
+  {time: 19, commits: 0},
+  {time: 20, commits: 0},
+  {time: 21, commits: 0},
+  {time: 22, commits: 0},
+  {time: 23, commits: 0},
+]
+
 class GraphContainer extends Component {
   constructor(props) {
     super(props);
@@ -130,8 +157,11 @@ class GraphContainer extends Component {
   }
 
   render() {
-    console.log(this.props.commits);
-    console.log(this.props.userInfo);
+    for (let i = 0; i < this.props.commits.length; i++) {
+      commitTimes1[moment(this.props.commits[i].date).hour()].commits++
+    }
+    // console.log( moment(this.props.commits[7].date).hour());
+    
     return (
       <div id="graphContainer" className="section padding">
         <div className="graphContainers">
@@ -227,7 +257,7 @@ class GraphContainer extends Component {
           tickFormat={["12AM", "4AM", "8AM", "12PM", "4PM", "8PM"]}/>
           <VictoryAxis dependentAxis tickFormat={(x) => (`${x}\nCommits`)}/>
           <VictoryLine
-            data={commitTimes}
+            data={commitTimes1}
             x="time"
             y="commits"
           />
