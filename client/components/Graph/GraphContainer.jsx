@@ -170,7 +170,9 @@ class GraphContainer extends Component {
     let languages = {};
     let repoNames = [];
     let rawData = this.props.commits;
+    
     rawData.forEach(item =>{ 
+      // console.log(this.props.commits);
       // repos repeat - and have the total amount, only do each repo once:
       if(repoNames.indexOf(item.repoName) === -1){
         repoNames.push(item.repoName)
@@ -234,7 +236,8 @@ class GraphContainer extends Component {
       <div id="graphContainer" className="section padding">
         <div className="graphContainers"> 
           <h3>Welcome <b>{this.props.userInfo.login}</b>! We're glad that you're here to join us. We wanted to take the hassle out of crunching all your
-          github information and we processed them for your viewing pleasure. Here's to many more days of github writing, commiting, and pushing. Go code, code, and code some more!</h3>
+          github information and we processed them for your viewing pleasure. Here's to many more days of github writing, commiting, and pushing. Go code, code, and code some more!
+          Also ya only  <b>got {this.props.userInfo.followers} followers</b> vs <b>{this.props.userInfo.following} people</b> following you.</h3>
         </div>
         <div className="graphContainers"><h4><b>Here's how many commits you've had per language!</b></h4></div>
         <div className="graphContainers">
