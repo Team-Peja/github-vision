@@ -15,7 +15,7 @@ class Main extends Component {
     console.log(this.props.user);
     if (document.cookie.includes('visionLogin') && !this.props.user) {
       return (
-        <div>
+        <div id="center-gif">
           <img id="loading" className="section paddingr" style={{width: '500px' }} src="https://static.colorofchange.org/static/v3/images/loading-circle.gif" />
         </div>
       ) 
