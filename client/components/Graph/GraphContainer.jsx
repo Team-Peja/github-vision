@@ -143,7 +143,7 @@ class GraphContainer extends Component {
           />
           <VictoryAxis
             dependentAxis
-            tickFormat={(x) => (`${x}\nCommits`)}
+            tickFormat={(x) => (`${Math.floor(x)}\nCommits`)}
           />
           <VictoryBar
             data={languageArr}
@@ -160,7 +160,7 @@ class GraphContainer extends Component {
             data={languageArr}
             innerRadius={100}
             style={{ labels: { fontSize: 8}}}
-            labels={(data) => `${data.language}\nCommits: ${data.commits}`}
+            labels={(data) => `${data.language}\nCommits: ${Math.ceil(data.commits)}`}
             x="language"
             y="commits"
           />
@@ -298,7 +298,6 @@ class GraphContainer extends Component {
           />
       )
     }
-    this.parseData();
     for (let i = 0; i < this.props.commits.length; i++) {
       commitTimes1[moment(this.props.commits[i].date).hour()].commits++;
       if (additionsDeletions[this.props.commits[i].repoName]) {
