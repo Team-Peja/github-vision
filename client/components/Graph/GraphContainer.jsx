@@ -143,7 +143,7 @@ class GraphContainer extends Component {
           />
           <VictoryAxis
             dependentAxis
-            tickFormat={(x) => (`${x}\nCommits`)}
+            tickFormat={(x) => (`${Math.floor(x)}\nCommits`)}
           />
           <VictoryBar
             data={languageArr}
@@ -160,7 +160,7 @@ class GraphContainer extends Component {
             data={languageArr}
             innerRadius={100}
             style={{ labels: { fontSize: 8}}}
-            labels={(data) => `${data.language}\nCommits: ${data.commits}`}
+            labels={(data) => `${data.language}\nCommits: ${Math.ceil(data.commits)}`}
             x="language"
             y="commits"
           />
@@ -244,7 +244,9 @@ class GraphContainer extends Component {
     let languages = {};
     let repoNames = [];
     let rawData = this.props.commits;
+    
     rawData.forEach(item =>{ 
+      // console.log(this.props.commits);
       // repos repeat - and have the total amount, only do each repo once:
       if(repoNames.indexOf(item.repoName) === -1){
         repoNames.push(item.repoName)
@@ -296,7 +298,6 @@ class GraphContainer extends Component {
           />
       )
     }
-    this.parseData();
     for (let i = 0; i < this.props.commits.length; i++) {
       commitTimes1[moment(this.props.commits[i].date).hour()].commits++;
       if (additionsDeletions[this.props.commits[i].repoName]) {
@@ -325,7 +326,8 @@ class GraphContainer extends Component {
       <div id="graphContainer" className="section padding">
         <div className="graphContainers"> 
           <h3>Welcome <b>{this.props.userInfo.login}</b>! We're glad that you're here to join us. We wanted to take the hassle out of crunching all your
-          github information and we processed them for your viewing pleasure. Here's to many more days of github writing, commiting, and pushing. Go code, code, and code some more!</h3>
+          github information and we processed them for your viewing pleasure. Here's to many more days of github writing, commiting, and pushing. Go code, code, and code some more!
+          Also ya only  <b>got {this.props.userInfo.followers} followers</b> vs <b>{this.props.userInfo.following} people</b> following you.</h3>
         </div>
         <div className="graphContainers"><h4><b>Here's how many commits you've had per language!</b></h4></div>
         <div className="graphContainers">
@@ -337,13 +339,13 @@ class GraphContainer extends Component {
         <div className="graphContainers"><h4><b>Here's your language usage over your GitHub life</b></h4></div>
         <div className="graphContainers">
         <VictoryChart className="graph" 
+          offset={1}
           animate={{ duration: 2000, easing: "poly" }}
           theme={VictoryTheme.material}
-          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>          
-          <VictoryLegend x={155} y={50}
+          padding={{ left: 65, top: 50, right: 65, bottom: 50 }}>          
+          <VictoryLegend x={55} y={50}
             orientation="horizontal"
             gutter={10}
-            style={{ border: { stroke: "black" }, title: {fontSize: 12 } }}
             data={
               lineGraphArray.map(elem => {
                 for (let key in elem) {
@@ -395,7 +397,7 @@ class GraphContainer extends Component {
             tickFormat={(x) => (`${x}\nLines`)}
           />
           <VictoryStack
-            colorScale={["tomato", "gold"]}
+            colorScale={["gold", "tomato"]}
             xOffset={1}>
             <VictoryBar      
               data={additionsDeletions2}
