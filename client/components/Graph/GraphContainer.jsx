@@ -7,6 +7,8 @@ import moment from 'moment';
 //import application 
 import Graph from './Graph.jsx';
 
+let languageArr = [];
+let languageAxisArr = [];
 const data1 = [
   {language: 'Python', commits: 167},
   {language: 'Javascript', commits: 1992},
@@ -115,6 +117,7 @@ class GraphContainer extends Component {
     super(props);
     this.state = { bar: true }
     this.barPieButton = this.barPieButton.bind(this);
+    this.parseData = this.parseData.bind(this);
   }
 
   barPieButton() {
@@ -131,14 +134,14 @@ class GraphContainer extends Component {
           domainPadding={20}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
           <VictoryAxis
-            tickFormat={["Python", "Javascript", "C++", "Java"]}
+            tickFormat={languageAxisArr}
           />
           <VictoryAxis
             dependentAxis
             tickFormat={(x) => (`${x}\nCommits`)}
           />
           <VictoryBar
-            data={data1}
+            data={languageArr}
             x="language"
             y="commits"
           />
@@ -149,7 +152,7 @@ class GraphContainer extends Component {
         <div className="VictoryContainer graph">
           <VictoryPie
             padding={{ left: 80, top: 50, right: 60, bottom: 50 }}
-            data={data1}
+            data={languageArr}
             innerRadius={100}
             style={{ labels: { fontSize: 8}}}
             labels={(data) => `${data.language}\nCommits: ${data.commits}`}
@@ -161,7 +164,48 @@ class GraphContainer extends Component {
     }
   }
 
+  parseData(){
+    languageArr = [];
+    languageAxisArr = [];
+    let languages = {};
+    let repoNames = [];
+    let rawData = this.props.commits;
+    rawData.forEach(item =>{ 
+      // repos repeat - and have the total amount, only do each repo once:
+      if(repoNames.indexOf(item.repoName) === -1){
+        repoNames.push(item.repoName)
+        if(item.repoName === 'SoloTodo'){
+          //'SoloTodo' is an outlier, so I'm skipping it: '
+        }else{
+          var repoLanguages = item.languages.languageDetails;
+          repoLanguages.forEach(lang => {
+            //if language already in object - add to count, otherwise init w/ count
+            if(languages.hasOwnProperty(lang.name)){
+              languages[lang.name] = languages[lang.name] + lang.size;
+            }else{
+              languages[lang.name] = lang.size;
+            }
+          })
+        }
+      }
+    })
+    console.log('languages: ', languages, '\n');
+    for(let i = 0; i < Object.entries(languages).length;i++){
+      let tempObj = {}
+      tempObj['language'] = Object.entries(languages)[i][0];
+      tempObj['commits'] = Object.entries(languages)[i][1];
+      languageArr.push(tempObj)
+      languageAxisArr.push(Object.entries(languages)[i][0]);
+    }
+    console.log('languageArr:', languageArr, '\n');
+    console.log('languageAxisArr:', languageAxisArr, '\n');
+
+    // languageArr.forEach(lang =>{
+    //   languageAxisArr.push(lang)
+    // })
+  }
   render() {
+    this.parseData();
     for (let i = 0; i < this.props.commits.length; i++) {
       commitTimes1[moment(this.props.commits[i].date).hour()].commits++;
       if (additionsDeletions[this.props.commits[i].repoName]) {
