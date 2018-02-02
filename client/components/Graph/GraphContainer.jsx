@@ -16,22 +16,24 @@ const data1 = [
   {language: 'Java', commits: 239}
 ];
 
+// my stuff
 const timeOne = [
-  {date: new Date('2017-01-17'), commits: 240 },
-  {date: new Date('2017-03-17'), commits: 192 },
-  {date: new Date('2017-05-17'), commits: 20 },
-  {date: new Date('2017-07-17'), commits: 288 },
-  {date: new Date('2017-09-17'), commits: 672 },
-  {date: new Date('2017-11-17'), commits: 118 }
+  {date: new Date('2017-01'), commits: 240 },
+  {date: new Date('2017-03'), commits: 192 },
+  {date: new Date('2017-05'), commits: 20 },
+  {date: new Date('2017-07'), commits: 288 },
+  {date: new Date('2017-09'), commits: 672 },
+  {date: new Date('2017-11'), commits: 118 }
 ];
 
+// my stuff also
 const timeTwo = [
-  {date: new Date('2017-01-17'), commits: 900 },
-  {date: new Date('2017-03-17'), commits: 800 },
-  {date: new Date('2017-05-17'), commits: 759 },
-  {date: new Date('2017-07-17'), commits: 200 },
-  {date: new Date('2017-09-17'), commits: 0 },
-  {date: new Date('2017-11-17'), commits: 129 }
+  {date: new Date('2017-01'), commits: 900 },
+  {date: new Date('2017-03'), commits: 800 },
+  {date: new Date('2017-05'), commits: 759 },
+  {date: new Date('2017-07'), commits: 200 },
+  {date: new Date('2017-09'), commits: 0 },
+  {date: new Date('2017-11'), commits: 129 }
 ];
 
 const additions = [
@@ -163,6 +165,41 @@ class GraphContainer extends Component {
       )
     }
   }
+  
+  formatLineGraphData() {
+
+    const fillColors = ["red", "blue", "green", "black", "purple", "orange", "yellow", "brown"];
+    const commitsByLanguage = {};
+
+    this.props.commits.forEach(commit => {
+      const month = new moment(commit.date).format('YYYY-MM');
+
+      commit.languages.languageDetails.forEach(language => {
+        if (language.name in commitsByLanguage) {
+          if (month in commitsByLanguage[language.name]) {
+            commitsByLanguage[language.name][month] += language.size/commit.languages.totalSize;
+          } else commitsByLanguage[language.name][month] = language.size/commit.languages.totalSize;
+        } else {
+          commitsByLanguage[language.name] = { month: 0 };
+          commitsByLanguage[language.name][month] = language.size/commit.languages.totalSize;
+        }
+      });
+    });
+    const finalObject = {};
+    let colorCounter = 0;
+    for (let language in commitsByLanguage) {
+      const tempArray = [];
+      finalObject[language] = { data: commitsByLanguage[language], color: fillColors[colorCounter] };
+      colorCounter++;
+      for (let dataMonth in commitsByLanguage[language]) {
+        if (dataMonth !== 'month') {
+          tempArray.push({ date: dataMonth, commits: commitsByLanguage[language][dataMonth] })
+        }
+      }
+      finalObject[language]['data'] = tempArray;
+    }
+    return finalObject;
+  }
 
   parseData(){
     languageArr = [];
@@ -205,6 +242,22 @@ class GraphContainer extends Component {
     // })
   }
   render() {
+
+    const lineGraphData = this.formatLineGraphData();
+    const lineGraphArray = Object.keys(lineGraphData).map(lang => {
+      return { [lang]: lineGraphData[lang].color }
+    });
+    const victoryLines = [];
+    for (let language in lineGraphData) {
+      victoryLines.push(
+        <VictoryLine
+            style={{ data: { stroke: lineGraphData[language].color } }}
+            data={lineGraphData[language].data}
+            x="date"
+            y="commits"
+          />
+      )
+    }
     this.parseData();
     for (let i = 0; i < this.props.commits.length; i++) {
       commitTimes1[moment(this.props.commits[i].date).hour()].commits++;
@@ -253,14 +306,17 @@ class GraphContainer extends Component {
             orientation="horizontal"
             gutter={10}
             style={{ border: { stroke: "black" }, title: {fontSize: 12 } }}
-            data={[
-              { name: "Javascript", symbol: { fill: "red" } },
-              { name: "Python", symbol: { fill: "blue" } }
-            ]}
+            data={
+              lineGraphArray.map(elem => {
+                for (let key in elem) {
+                  return { name: key, symbol: { fill: elem[key] }}
+                }
+              })
+            }
           />
           <VictoryAxis scale="time" />
           <VictoryAxis dependentAxis tickFormat={(x) => (`${x}\nCommits`)}/>
-          <VictoryLine
+          {/* <VictoryLine
             style={{ data: { stroke: "blue"} }}
             data={timeOne}
             x="date"
@@ -271,7 +327,8 @@ class GraphContainer extends Component {
             data={timeTwo}
             x="date"
             y="commits"
-          />
+          /> */}
+          {victoryLines}
           </VictoryChart>
           <p>
             Wow you worked with that many languages? You really are a cool bean. 
