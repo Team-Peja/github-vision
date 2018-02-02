@@ -9,6 +9,8 @@ import Graph from './Graph.jsx';
 
 let languageArr = [];
 let languageAxisArr = [];
+let languageLineArr = [];
+let languageLineAxisArr = [];
 const data1 = [
   {language: 'Python', commits: 167},
   {language: 'Javascript', commits: 1992},
@@ -119,7 +121,8 @@ class GraphContainer extends Component {
     super(props);
     this.state = { bar: true }
     this.barPieButton = this.barPieButton.bind(this);
-    this.parseData = this.parseData.bind(this);
+    this.parseDataIntoLinesOfCode = this.parseDataIntoLinesOfCode.bind(this);
+    this.parseDataIntoCommits = this.parseDataIntoCommits.bind(this);
   }
 
   barPieButton() {
@@ -201,9 +204,43 @@ class GraphContainer extends Component {
     return finalObject;
   }
 
-  parseData(){
+  parseDataIntoCommits(){
     languageArr = [];
     languageAxisArr = [];
+    let rawData = this.props.commits;
+    let languages = {};
+    console.log('total Commits: ', rawData.length)
+    rawData.forEach(item =>{
+      var repoLanguages = item.languages.languageDetails;
+      let totalSize = 0;
+      // get the totalSize of that repo so we can calc % per language per commit
+      for(let i = 0; i < Object.values(repoLanguages).length; i++){
+        totalSize += Object.values(repoLanguages)[i].size;
+      }      
+      for(let i = 0; i < Object.values(repoLanguages).length; i++){
+        let size = Object.values(repoLanguages)[i].size;
+        let name = Object.values(repoLanguages)[i].name;
+        let currPercent = Object.values(repoLanguages)[i].size / totalSize;
+        if(languages.hasOwnProperty(name)){
+          languages[name] = languages[name] + currPercent;
+        }else{
+          languages[name] = currPercent;
+        }
+      }
+    })
+    // format for the graph
+    for(let i = 0; i < Object.entries(languages).length;i++){
+      let tempObj = {}
+      tempObj['language'] = Object.entries(languages)[i][0];
+      tempObj['commits'] = Object.entries(languages)[i][1];
+      languageArr.push(tempObj)
+      languageAxisArr.push(Object.entries(languages)[i][0]);
+    }
+  }
+
+  parseDataIntoLinesOfCode(){
+    languageLineArr = [];
+    languageLineAxisArr = [];
     let languages = {};
     let repoNames = [];
     let rawData = this.props.commits;
@@ -233,17 +270,18 @@ class GraphContainer extends Component {
       let tempObj = {}
       tempObj['language'] = Object.entries(languages)[i][0];
       tempObj['commits'] = Object.entries(languages)[i][1];
-      languageArr.push(tempObj)
-      languageAxisArr.push(Object.entries(languages)[i][0]);
+      languageLineArr.push(tempObj)
+      languageLineAxisArr.push(Object.entries(languages)[i][0]);
     }
-    console.log('languageArr:', languageArr, '\n');
-    console.log('languageAxisArr:', languageAxisArr, '\n');
+    console.log('languageArr:', languageLineArr, '\n');
+    console.log('languageAxisArr:', languageLineAxisArr, '\n');
 
     // languageArr.forEach(lang =>{
     //   languageAxisArr.push(lang)
     // })
   }
   render() {
+    this.parseDataIntoCommits();
 
     const lineGraphData = this.formatLineGraphData();
     const lineGraphArray = Object.keys(lineGraphData).map(lang => {
