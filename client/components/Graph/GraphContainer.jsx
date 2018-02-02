@@ -302,13 +302,13 @@ class GraphContainer extends Component {
         <div className="graphContainers"><h4><b>Here's your language usage over your GitHub life</b></h4></div>
         <div className="graphContainers">
         <VictoryChart className="graph" 
+          offset={1}
           animate={{ duration: 2000, easing: "poly" }}
           theme={VictoryTheme.material}
-          padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>          
-          <VictoryLegend x={155} y={50}
+          padding={{ left: 65, top: 50, right: 65, bottom: 50 }}>          
+          <VictoryLegend x={55} y={50}
             orientation="horizontal"
             gutter={10}
-            style={{ border: { stroke: "black" }, title: {fontSize: 12 } }}
             data={
               lineGraphArray.map(elem => {
                 for (let key in elem) {
@@ -360,7 +360,7 @@ class GraphContainer extends Component {
             tickFormat={(x) => (`${x}\nLines`)}
           />
           <VictoryStack
-            colorScale={["tomato", "gold"]}
+            colorScale={["gold", "tomato"]}
             xOffset={1}>
             <VictoryBar      
               data={additionsDeletions2}
