@@ -7,6 +7,8 @@ import moment from 'moment';
 //import application 
 import Graph from './Graph.jsx';
 
+let languageArr = [];
+let languageAxisArr = [];
 const data1 = [
   {language: 'Python', commits: 167},
   {language: 'Javascript', commits: 1992},
@@ -50,6 +52,14 @@ const deletions = [
   {repository: "Webtorrent", deletions: 1144}
 ]
 
+const additionsDeletions = {
+  
+}
+
+const additionsDeletions2 = [
+
+]
+
 const commitTimes = [
   {time: 0, commits: 0},
   {time: 1, commits: 0},
@@ -77,12 +87,39 @@ const commitTimes = [
   {time: 23, commits: 0},
 ]
 
+const commitTimes1 = [
+  {time: 0, commits: 0},
+  {time: 1, commits: 0},
+  {time: 2, commits: 0},
+  {time: 3, commits: 0},
+  {time: 4, commits: 0},
+  {time: 5, commits: 0},
+  {time: 6, commits: 0},
+  {time: 7, commits: 0},
+  {time: 8, commits: 0},
+  {time: 9, commits: 0},
+  {time: 10, commits: 0},
+  {time: 11, commits: 0},
+  {time: 12, commits: 0},
+  {time: 13, commits: 0},
+  {time: 14, commits: 0},
+  {time: 15, commits: 0},
+  {time: 16, commits: 0},
+  {time: 17, commits: 0},
+  {time: 18, commits: 0},
+  {time: 19, commits: 0},
+  {time: 20, commits: 0},
+  {time: 21, commits: 0},
+  {time: 22, commits: 0},
+  {time: 23, commits: 0},
+]
+
 class GraphContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { bar: true }
     this.barPieButton = this.barPieButton.bind(this);
-    // this.formatLineGraphData = this.formatLineGraphData.bind(this);
+    this.parseData = this.parseData.bind(this);
   }
 
   barPieButton() {
@@ -98,18 +135,15 @@ class GraphContainer extends Component {
           theme={VictoryTheme.material} 
           domainPadding={20}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>
-          <VictoryLabel x={0} y={29}
-            text="Commits over Languages"
-          />
           <VictoryAxis
-            tickFormat={["Python", "Javascript", "C++", "Java"]}
+            tickFormat={languageAxisArr}
           />
           <VictoryAxis
             dependentAxis
             tickFormat={(x) => (`${x}\nCommits`)}
           />
           <VictoryBar
-            data={data1}
+            data={languageArr}
             x="language"
             y="commits"
           />
@@ -120,7 +154,7 @@ class GraphContainer extends Component {
         <div className="VictoryContainer graph">
           <VictoryPie
             padding={{ left: 80, top: 50, right: 60, bottom: 50 }}
-            data={data1}
+            data={languageArr}
             innerRadius={100}
             style={{ labels: { fontSize: 8}}}
             labels={(data) => `${data.language}\nCommits: ${data.commits}`}
@@ -167,6 +201,46 @@ class GraphContainer extends Component {
     return finalObject;
   }
 
+  parseData(){
+    languageArr = [];
+    languageAxisArr = [];
+    let languages = {};
+    let repoNames = [];
+    let rawData = this.props.commits;
+    rawData.forEach(item =>{ 
+      // repos repeat - and have the total amount, only do each repo once:
+      if(repoNames.indexOf(item.repoName) === -1){
+        repoNames.push(item.repoName)
+        if(item.repoName === 'SoloTodo'){
+          //'SoloTodo' is an outlier, so I'm skipping it: '
+        }else{
+          var repoLanguages = item.languages.languageDetails;
+          repoLanguages.forEach(lang => {
+            //if language already in object - add to count, otherwise init w/ count
+            if(languages.hasOwnProperty(lang.name)){
+              languages[lang.name] = languages[lang.name] + lang.size;
+            }else{
+              languages[lang.name] = lang.size;
+            }
+          })
+        }
+      }
+    })
+    console.log('languages: ', languages, '\n');
+    for(let i = 0; i < Object.entries(languages).length;i++){
+      let tempObj = {}
+      tempObj['language'] = Object.entries(languages)[i][0];
+      tempObj['commits'] = Object.entries(languages)[i][1];
+      languageArr.push(tempObj)
+      languageAxisArr.push(Object.entries(languages)[i][0]);
+    }
+    console.log('languageArr:', languageArr, '\n');
+    console.log('languageAxisArr:', languageAxisArr, '\n');
+
+    // languageArr.forEach(lang =>{
+    //   languageAxisArr.push(lang)
+    // })
+  }
   render() {
 
     const lineGraphData = this.formatLineGraphData();
@@ -184,23 +258,50 @@ class GraphContainer extends Component {
           />
       )
     }
+    this.parseData();
+    for (let i = 0; i < this.props.commits.length; i++) {
+      commitTimes1[moment(this.props.commits[i].date).hour()].commits++;
+      if (additionsDeletions[this.props.commits[i].repoName]) {
+        additionsDeletions[this.props.commits[i].repoName].additions += this.props.commits[i].added;
+        additionsDeletions[this.props.commits[i].repoName].deletions += this.props.commits[i].deleted;
+      } else {
+        additionsDeletions[this.props.commits[i].repoName] = { additions: this.props.commits[i].added, deletions: this.props.commits[i].deleted}
+      }
+      // for (let f = 0; f < additionsDeletions.length; f++) {
+      //   if (additionsDeletions[f].repoName === this.props.commits[i].repoName) {
+      //     additionsDeletions[f].additions += this.props.commits[i].added;
+      //     additionsDeletions[f].deletions += this.props.commits[i].deleted;
+      //   }
+      //   if (f === additionsDeletions.length - 1) additionsDeletions.push({ repoName: this.props.commits[i].repoName, additions: this.props.commits[i].added, deletions: this.props.commits[i].deleted});
+      // }
+      // if (additionsDeletions.length === 0) additionsDeletions.push({ repoName: this.props.commits[i].repoName, additions: this.props.commits[i].added, deletions: this.props.commits[i].deleted});      
+      // console.log(additionsDeletions)
+    }
+
+    for (const key in additionsDeletions) {
+      additionsDeletions2.push({ repoName: key, additions: additionsDeletions[key].additions, deletions: additionsDeletions[key].deletions});
+    }
+    console.log(this.props.userInfo);
     
     return (
       <div id="graphContainer" className="section padding">
+        <div className="graphContainers"> 
+          <h3>Welcome <b>{this.props.userInfo.login}</b>! We're glad that you're here to join us. We wanted to take the hassle out of crunching all your
+          github information and we processed them for your viewing pleasure. Here's to many more days of github writing, commiting, and pushing. Go code, code, and code some more!</h3>
+        </div>
+        <div className="graphContainers"><h4><b>Here's how many commits you've had per language!</b></h4></div>
         <div className="graphContainers">
           <button onClick={this.barPieButton}>click me</button>
           {this.barToPie()}
           <p>Oh boy person you really really did write alot.</p>
         </div>
 
+        <div className="graphContainers"><h4><b>Here's your language usage over your GitHub life</b></h4></div>
         <div className="graphContainers">
         <VictoryChart className="graph" 
-          animate={{ duration: 1000, easing: "poly" }}
+          animate={{ duration: 2000, easing: "poly" }}
           theme={VictoryTheme.material}
           padding={{ left: 65, top: 50, right: 60, bottom: 50 }}>          
-          <VictoryLabel x={0} y={29}
-            text="Language Commits over time"
-          />
           <VictoryLegend x={155} y={50}
             orientation="horizontal"
             gutter={10}
@@ -235,10 +336,11 @@ class GraphContainer extends Component {
           </p>
         </div>
 
-
+        <div className="graphContainers"><h4><b>Here's all the code you've deleted and added per Repo</b></h4></div>
         <div className="graphContainers">
         <VictoryChart className="graph" 
-        domainPadding={50}
+          animate={{ duration: 8000, easing: "poly" }}         
+          domainPadding={50}
           theme={VictoryTheme.material} 
           // padding={{ left: 50, top: 50, right: 20, bottom: 50 }}
           >
@@ -246,24 +348,25 @@ class GraphContainer extends Component {
             text="Additions/Deletions on repos"
           /> */}
           <VictoryAxis
-            style={{ tickLabels: { fontSize: 10, angle: -50 } }}
-            tickValues={[1, 2, 3, 4, 5]}            
-            tickFormat={["Pete's Memory\n Palace", "Peer Connect", "Pastchat", "Website", "Webtorrent"]}
+            style={{ tickLabels: { fontSize: 7, angle: -50 } }}
+                 
+            tickFormat={Object.keys(additionsDeletions)}
           />
           <VictoryAxis
             dependentAxis
             tickFormat={(x) => (`${x}\nLines`)}
           />
           <VictoryStack
-          xOffset={1}>
+            colorScale={["tomato", "gold"]}
+            xOffset={1}>
             <VictoryBar      
-              data={additions}
-              x="Repository"
+              data={additionsDeletions2}
+              x="repoName"
               y="additions"
             />
             <VictoryBar
-              data={deletions}
-              x="Repository"
+              data={additionsDeletions2}
+              x="repoName"
               y="deletions"
             />
           </VictoryStack>
@@ -275,16 +378,17 @@ class GraphContainer extends Component {
         </p>
         </div>
 
+        <div className="graphContainers"><h4><b>Here's when you're the most commity efficient</b></h4></div>
         <div className="graphContainers">
-
         <VictoryChart className="graph"
-          padding={{ left: 50, top: 60, right: 60, bottom: 50 }}         
+          animate={{ duration: 10000, easing: "poly" }}         
+          padding={{ left: 70, top: 60, right: 60, bottom: 50 }}         
           theme={VictoryTheme.material}>
           <VictoryAxis tickValues={[0, 4, 8, 12, 16, 20]}
           tickFormat={["12AM", "4AM", "8AM", "12PM", "4PM", "8PM"]}/>
           <VictoryAxis dependentAxis tickFormat={(x) => (`${x}\nCommits`)}/>
           <VictoryLine
-            data={commitTimes}
+            data={commitTimes1}
             x="time"
             y="commits"
           />
